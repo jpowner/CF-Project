@@ -15,5 +15,5 @@ variable "ami" {
 
 variable "root_volume_size" {
   description = "Value of the root volume size"
-  type = number
+  type        = number
 }
