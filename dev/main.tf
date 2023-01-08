@@ -25,3 +25,19 @@ module "network" {
 data "aws_availability_zones" "available" {
   state = "available"
 }
+
+module "compute" {
+  source = "../modules/compute"
+  ami = data.aws_ami.rhel_9.id
+  instance_type = "t2.micro"
+  public_subnet_id = module.network.public_subnet_ids[1]
+  root_volume_size = 20
+}
+
+data "aws_ami" "rhel_9" {
+  owners = ["309956199498"] # Red Hat
+  filter {
+    name   = "name"
+    values = ["RHEL-9.1.0_HVM-20221101-x86_64-2-Hourly2-GP2"]
+  }
+}
