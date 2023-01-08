@@ -51,3 +51,13 @@ module "autoscaling" {
   volume_size         = 20
   vpc_zone_identifier = module.network.private_subnet_ids
 }
+
+module "loadbalancer" {
+  source             = "../modules/loadbalancer"
+  load_balancer_type = "application"
+  private_subnet_ids = module.network.private_subnet_ids
+  asg_name           = module.autoscaling.autoscaling_group_id
+  vpc_id             = module.network.vpc_id
+  port               = 80
+  protocol           = "HTTP"
+}
