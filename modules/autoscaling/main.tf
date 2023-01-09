@@ -19,4 +19,8 @@ resource "aws_autoscaling_group" "autoscaling_group" {
     id      = aws_launch_template.launch_template.id
     version = var.launch_template_version
   }
+
+  lifecycle {
+    ignore_changes = [desired_capacity, target_group_arns]
+  }
 }
