@@ -57,14 +57,13 @@ module "autoscaling" {
 module "loadbalancer" {
   source             = "../modules/loadbalancer"
   load_balancer_type = "application"
-  private_subnet_ids = module.network.private_subnet_ids
+  public_subnet_ids  = module.network.public_subnet_ids
   asg_name           = module.autoscaling.autoscaling_group_id
   vpc_id             = module.network.vpc_id
   port               = 80
   protocol           = "HTTP"
   security_groups    = [module.security.private_subnet_lb_sg_id]
 }
-
 
 module "security" {
   source           = "../modules/security"
@@ -77,5 +76,5 @@ module "security" {
 }
 
 module "storage" {
-  source           = "../modules/storage"
+  source = "../modules/storage"
 }
