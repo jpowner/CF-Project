@@ -8,6 +8,7 @@ resource "aws_launch_template" "launch_template" {
       volume_size = var.volume_size
     }
   }
+  vpc_security_group_ids = var.security_groups
 }
 
 resource "aws_autoscaling_group" "autoscaling_group" {
@@ -18,5 +19,9 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   launch_template {
     id      = aws_launch_template.launch_template.id
     version = var.launch_template_version
+  }
+
+  lifecycle {
+    ignore_changes = [desired_capacity, target_group_arns]
   }
 }

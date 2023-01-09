@@ -17,3 +17,8 @@ variable "root_volume_size" {
   description = "Value of the root volume size"
   type        = number
 }
+
+variable "ssm_role_profile_name" {
+  description = "Value of the IAM SSM role profile name"
+  type        = string
+}

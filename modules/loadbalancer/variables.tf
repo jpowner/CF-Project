@@ -33,3 +33,8 @@ variable "listener_action_type" {
   type        = string
   default     = "forward"
 }
+
+variable "security_groups" {
+  description = "List of the security groups for the load balancer"
+  type        = list(string)
+}
