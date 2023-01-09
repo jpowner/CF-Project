@@ -62,17 +62,12 @@ module "loadbalancer" {
   vpc_id             = module.network.vpc_id
   port               = 80
   protocol           = "HTTP"
-  security_groups    = [module.security.private_subnet_lb_sg_id]
+  security_groups    = [module.security.load_balancer_sg_id]
 }
 
 module "security" {
   source           = "../modules/security"
-  ingress_port     = 80
-  egress_port      = 0
-  ingress_protocol = "tcp"
-  egress_protocol  = "-1"
   vpc_id           = module.network.vpc_id
-  lb_sg_cidrs      = ["0.0.0.0/0"]
 }
 
 module "storage" {
