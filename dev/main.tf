@@ -75,3 +75,7 @@ module "security" {
   vpc_id           = module.network.vpc_id
   lb_sg_cidrs      = ["0.0.0.0/0"]
 }
+
+module "storage" {
+  source           = "../modules/storage"
+}
