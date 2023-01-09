@@ -39,3 +39,8 @@ variable "launch_template_version" {
   type        = string
   default     = "$Latest"
 }
+
+variable "security_groups" {
+  description = "List of the security groups for the ec2 instances"
+  type        = list(string)
+}

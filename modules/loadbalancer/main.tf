@@ -1,6 +1,7 @@
 resource "aws_lb" "load_balancer" {
   subnets            = var.private_subnet_ids
   load_balancer_type = var.load_balancer_type
+  security_groups    = var.security_groups
 }
 
 resource "aws_lb_listener" "lb_listener" {

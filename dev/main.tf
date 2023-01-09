@@ -27,11 +27,12 @@ data "aws_availability_zones" "available" {
 }
 
 module "compute" {
-  source           = "../modules/compute"
-  ami              = data.aws_ami.rhel_9.id
-  instance_type    = "t2.micro"
-  public_subnet_id = module.network.public_subnet_ids[1]
-  root_volume_size = 20
+  source                = "../modules/compute"
+  ami                   = data.aws_ami.rhel_9.id
+  instance_type         = "t2.micro"
+  public_subnet_id      = module.network.public_subnet_ids[1]
+  root_volume_size      = 20
+  ssm_role_profile_name = module.security.ssm_role_profile_name
 }
 
 data "aws_ami" "rhel_9" {
@@ -50,6 +51,7 @@ module "autoscaling" {
   min_size            = 2
   volume_size         = 20
   vpc_zone_identifier = module.network.private_subnet_ids
+  security_groups     = [module.security.private_subnet_instances_sg_id]
 }
 
 module "loadbalancer" {
@@ -60,4 +62,16 @@ module "loadbalancer" {
   vpc_id             = module.network.vpc_id
   port               = 80
   protocol           = "HTTP"
+  security_groups    = [module.security.private_subnet_lb_sg_id]
+}
+
+
+module "security" {
+  source           = "../modules/security"
+  ingress_port     = 80
+  egress_port      = 0
+  ingress_protocol = "tcp"
+  egress_protocol  = "-1"
+  vpc_id           = module.network.vpc_id
+  lb_sg_cidrs      = ["0.0.0.0/0"]
 }
